@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/deal_no_deal_logo"
+
+        />
+
+    <TextView
+        android:id="@+id/txtCasesLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/casesLeft"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <Button
+        android:id="@+id/suitcase_position_1"
+        android:layout_width="66dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="26dp"
+
+        android:background="@drawable/suitcase_open_1"
+        android:foreground="@drawable/suitcase_position_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <Button
+        android:id="@+id/suitcase_position_2"
+        android:layout_width="66dp"
+        android:layout_height="60dp"
+
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="26dp"
+        android:background="@drawable/suitcase_open_1"
+        android:foreground="@drawable/suitcase_position_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <Button
+        android:id="@+id/suitcase_position_3"
+        android:layout_width="66dp"
+        android:layout_height="60dp"
+
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="108dp"
+        android:background="@drawable/suitcase_open_1"
+        android:foreground="@drawable/suitcase_position_3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <Button
+        android:id="@+id/suitcase_position_4"
+        android:layout_width="66dp"
+        android:layout_height="60dp"
+
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="108dp"
+        android:background="@drawable/suitcase_open_1"
+        android:foreground="@drawable/suitcase_position_4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <Button
+        android:id="@+id/suitcase_position_5"
+        android:layout_width="66dp"
+        android:layout_height="60dp"
+
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="188dp"
+        android:background="@drawable/suitcase_open_1"
+        android:foreground="@drawable/suitcase_position_5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <Button
+        android:id="@+id/suitcase_position_6"
+        android:layout_width="66dp"
+        android:layout_height="60dp"
+
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="188dp"
+        android:background="@drawable/suitcase_open_1"
+        android:foreground="@drawable/suitcase_position_6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <Button
+        android:id="@+id/suitcase_position_7"
+        android:layout_width="66dp"
+        android:layout_height="60dp"
+
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="268dp"
+        android:background="@drawable/suitcase_open_1"
+        android:foreground="@drawable/suitcase_position_7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <Button
+        android:id="@+id/suitcase_position_8"
+        android:layout_width="66dp"
+        android:layout_height="60dp"
+
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="268dp"
+        android:background="@drawable/suitcase_open_1"
+        android:foreground="@drawable/suitcase_position_8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <Button
+        android:id="@+id/suitcase_position_9"
+        android:layout_width="66dp"
+        android:layout_height="60dp"
+
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="360dp"
+        android:background="@drawable/suitcase_open_1"
+        android:foreground="@drawable/suitcase_position_9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <Button
+        android:id="@+id/suitcase_position_10"
+        android:layout_width="66dp"
+        android:layout_height="60dp"
+
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="360dp"
+        android:background="@drawable/suitcase_open_1"
+        android:foreground="@drawable/suitcase_position_10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <Button
+        android:id="@+id/buttonReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Reset"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/reward_1"
+        android:layout_width="118dp"
+        android:layout_height="32dp"
+
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/reward_1"
+        android:foreground="@drawable/reward_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <ImageView
+        android:id="@+id/reward_10"
+        android:layout_width="118dp"
+        android:layout_height="32dp"
+
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/reward_10"
+        android:foreground="@drawable/reward_10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <ImageView
+        android:id="@+id/reward_50"
+        android:layout_width="118dp"
+        android:layout_height="32dp"
+
+        android:layout_marginTop="108dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/reward_50"
+        android:foreground="@drawable/reward_50"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <ImageView
+        android:id="@+id/reward_100"
+        android:layout_width="118dp"
+        android:layout_height="32dp"
+
+        android:layout_marginTop="148dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/reward_100"
+        android:foreground="@drawable/reward_100"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <ImageView
+        android:id="@+id/reward_300"
+        android:layout_width="118dp"
+        android:layout_height="32dp"
+
+        android:layout_marginTop="188dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/reward_300"
+        android:foreground="@drawable/reward_300"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <ImageView
+        android:id="@+id/reward_1000"
+        android:layout_width="118dp"
+        android:layout_height="32dp"
+
+        android:layout_marginTop="228dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/reward_1000"
+        android:foreground="@drawable/reward_1000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <ImageView
+        android:id="@+id/reward_10000"
+        android:layout_width="118dp"
+        android:layout_height="32dp"
+
+        android:layout_marginTop="268dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/reward_10000"
+        android:foreground="@drawable/reward_10000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <ImageView
+        android:id="@+id/reward_50000"
+        android:layout_width="118dp"
+        android:layout_height="32dp"
+
+        android:layout_marginTop="308dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/reward_50000"
+        android:foreground="@drawable/reward_50000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <ImageView
+        android:id="@+id/reward_100000"
+        android:layout_width="118dp"
+        android:layout_height="32dp"
+
+        android:layout_marginTop="348dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/reward_100000"
+        android:foreground="@drawable/reward_100000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <ImageView
+        android:id="@+id/reward_500000"
+        android:layout_width="118dp"
+        android:layout_height="32dp"
+
+        android:layout_marginTop="388dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/reward_500000"
+        android:foreground="@drawable/reward_500000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
