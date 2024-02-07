@@ -1,7 +1,9 @@
 package com.example.assignment2;
 
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +11,8 @@ import android.widget.ImageView;
 import java.util.Random;
 import android.widget.TextView;
 import android.util.Log;
+
+import org.w3c.dom.Text;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -23,9 +27,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean[] usedIndexes = new boolean[10]; // Array to track used indexes
     public int clickCounter = 0; // Counter to track button clicks
 
-    private int bankOffer = 0;// Declare the bankOffer variable
+    private double bankOffer = 0;// Declare the bankOffer variable
+    private int roundCount = 1; //Declare the round variable
     public TextView txtCasesLeft;
     public Button buttonReset,buttonDeal,buttonNoDeal;
+    public boolean isFinal = false;
 
 
 
@@ -38,18 +44,49 @@ public class MainActivity extends AppCompatActivity {
         buttonReset = findViewById(R.id.buttonReset);
         buttonDeal = findViewById(R.id.buttonDeal); // Reference to the "Deal" button
         buttonNoDeal = findViewById(R.id.buttonNoDeal); // Reference to the "No Deal" button
-        updateCasesLeftText(0, bankOffer); // Update text to display bank's offer
+        //updateCasesLeftText(0, bankOffer); // Update text to display bank's offer
         buttonDeal.setVisibility(View.GONE);
         buttonNoDeal.setVisibility(View.GONE);
 
         initializeButtons();
-        buttonReset.setOnClickListener(new View.OnClickListener() {
+        buttonReset.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 resetGame();
             }
         });
+        //Deal Button
+        buttonDeal.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttonDeal.setVisibility(View.GONE);
+                buttonNoDeal.setVisibility(View.GONE);
+                txtCasesLeft.setText("You won: $" + calculateBankDeal(calculateTotalReward()) + "!");
+            }
+        });
+
+
+        //No Deal Button
+        buttonNoDeal.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttonDeal.setVisibility(View.GONE);
+                buttonNoDeal.setVisibility(View.GONE);
+                clickCounter = 0;
+                if (roundCount == 2) {
+                    //start final round
+                    txtCasesLeft.setText("Choose 1 Case");
+                    gameResume();
+                    isFinal = true;
+                } else { // starts second round
+                    roundCount++;
+                    updateCasesLeftText(4, 0);
+                    gameResume();
+                }
+            }
+        });
     }
+
 
 
     // Method to reset the game
@@ -59,8 +96,13 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < usedIndexes.length; i++) {
             usedIndexes[i] = false;
         }
-        updateCasesLeftText(0, bankOffer); // Update text to display bank's offer
-
+        gameResume();
+        buttonEnable();
+        roundCount = 1;
+        isFinal = false;
+        txtCasesLeft.setText("Choose 4 Cases");
+        buttonDeal.setVisibility(View.GONE);
+        buttonNoDeal.setVisibility(View.GONE);
 
         // Clear foreground images from rewards
         for (ImageView imageView : rewardImageViews) {
@@ -71,10 +113,13 @@ public class MainActivity extends AppCompatActivity {
             Button button = findViewById(getButtonId(i));
             button.setForeground(getDrawable(originalSuitcaseImages[i]));
         }
-// Reset the rewardValues array
+        // Reset the rewardValues array
         resetRewardValues();
         // Show toast message indicating game reset
         Toast.makeText(this, "Game reset", Toast.LENGTH_SHORT).show();
+
+        //Reset the buttons
+        initializeButtons();
     }
     // Method to reset the rewardValues array
     private void resetRewardValues() {
@@ -117,86 +162,106 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Set OnClickListener for each button
-        suitcase_position_1.setOnClickListener(new View.OnClickListener() {
+        suitcase_position_1.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonClick(0);
+                if (!isFinal) {onButtonClick(0);} else {
+
+                }
             }
         });
 
-        suitcase_position_2.setOnClickListener(new View.OnClickListener() {
+        suitcase_position_2.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonClick(1);
+                if (!isFinal) {onButtonClick(1);} else {
+                    finalClick(1);
+                }
             }
         });
 // Set OnClickListener for suitcase_position_3
-        suitcase_position_3.setOnClickListener(new View.OnClickListener() {
+        suitcase_position_3.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonClick(2);
+                if (!isFinal) {onButtonClick(2);} else {
+                    finalClick(2);
+                }
             }
         });
 
 // Set OnClickListener for suitcase_position_4
-        suitcase_position_4.setOnClickListener(new View.OnClickListener() {
+        suitcase_position_4.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonClick(3);
+                if (!isFinal) {onButtonClick(3);} else {
+                    finalClick(3);
+                }
             }
         });
 
 // Set OnClickListener for suitcase_position_5
-        suitcase_position_5.setOnClickListener(new View.OnClickListener() {
+        suitcase_position_5.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonClick(4);
+                if (!isFinal) {onButtonClick(4);} else {
+                    finalClick(4);
+                }
             }
         });
 
 // Set OnClickListener for suitcase_position_6
-        suitcase_position_6.setOnClickListener(new View.OnClickListener() {
+        suitcase_position_6.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonClick(5);
+                if (!isFinal) {onButtonClick(5);} else {
+                    finalClick(5);
+                }
             }
         });
 
 // Set OnClickListener for suitcase_position_7
-        suitcase_position_7.setOnClickListener(new View.OnClickListener() {
+        suitcase_position_7.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonClick(6);
+                if (!isFinal) {onButtonClick(6);} else {
+                    finalClick(6);
+                }
             }
         });
 
 // Set OnClickListener for suitcase_position_8
-        suitcase_position_8.setOnClickListener(new View.OnClickListener() {
+        suitcase_position_8.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonClick(7);
+                if (!isFinal) {onButtonClick(7);} else {
+                    finalClick(7);
+                }
             }
         });
 
 // Set OnClickListener for suitcase_position_9
-        suitcase_position_9.setOnClickListener(new View.OnClickListener() {
+        suitcase_position_9.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonClick(8);
+                if (!isFinal) {onButtonClick(8);} else {
+                    finalClick(8);
+                }
             }
         });
 
 // Set OnClickListener for suitcase_position_10
-        suitcase_position_10.setOnClickListener(new View.OnClickListener() {
+        suitcase_position_10.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                onButtonClick(9);
+                if (!isFinal) {onButtonClick(9);} else {
+                    finalClick(9);
+                }
             }
         });
 
 
     }
-    private void updateCasesLeftText(int casesLeft, int bankOffer) {
+    private void updateCasesLeftText(int casesLeft, double bankOffer) {
         if (casesLeft > 0) {
             // Show "Choose X cases" message if cases are remaining
             txtCasesLeft.setText("Choose " + casesLeft + " cases");
@@ -205,13 +270,14 @@ public class MainActivity extends AppCompatActivity {
             buttonNoDeal.setVisibility(View.GONE);
         } else if (casesLeft == 0) {
             // Show the bank offer when all cases are chosen
-            txtCasesLeft.setText("Bank's Offer: $" + bankOffer);
+            txtCasesLeft.setText(String.format("Bank's Offer: $%,.0f", bankOffer));
             // Show the "Deal" and "No Deal" buttons
             buttonDeal.setVisibility(View.VISIBLE);
             buttonNoDeal.setVisibility(View.VISIBLE);
+            gamePause();
         } else {
             // Show the bank offer when there are no cases left to choose
-            txtCasesLeft.setText("Bank's Offer: $" + bankOffer);
+            txtCasesLeft.setText(String.format("Bank's Offer: $%,.0f", bankOffer));
             // Hide the "Deal" and "No Deal" buttons
             buttonDeal.setVisibility(View.GONE);
             buttonNoDeal.setVisibility(View.GONE);
@@ -222,14 +288,7 @@ public class MainActivity extends AppCompatActivity {
     // Method to handle button click
     private void onButtonClick(int index) {
         int clicksLeft = 4 - clickCounter;
-        if (clicksLeft <= 0) {
-            // Calculate bank's offer when no clicks left
-            int total = calculateTotalReward();
-            int bankOffer = calculateBankDeal(total);
-            updateCasesLeftText(0, bankOffer); // Update text to display bank's offer
-            Toast.makeText(this, "No clicks left", Toast.LENGTH_SHORT).show(); // Show toast
-            return;
-        }
+
         // Generate a random index that hasn't been used
         int randomIndex = getRandomUnusedIndex();
         // Set the selected image as foreground of button
@@ -241,15 +300,37 @@ public class MainActivity extends AppCompatActivity {
         int selectedRewardValue = rewardValues[randomIndex];
         removeRewardValue(selectedRewardValue);
 
-        // Mark the selected index as used
+        // Mark the selected index as used and turns the case button off
+        button.setEnabled(false);
         usedIndexes[randomIndex] = true;
         // Increase click counter
         clickCounter++;
         // Update remaining cases text
         updateCasesLeftText(4 - clickCounter, 0);
-        Toast.makeText(this, "You have " + (clicksLeft - 1) + " click(s) left", Toast.LENGTH_SHORT).show(); // Show remaining clicks toast
+        if (clicksLeft <= 1) {
+            // Calculate bank's offer when no clicks left
+            int total = calculateTotalReward();
+            double bankOffer = calculateBankDeal(total);
+            updateCasesLeftText(0, bankOffer); // Update text to display bank's offer
+            Toast.makeText(this, "No clicks left", Toast.LENGTH_SHORT).show(); // Show toast
+        } else {
+            Toast.makeText(this, "You have " + (clicksLeft - 1) + " click(s) left", Toast.LENGTH_SHORT).show(); // Show remaining clicks toast
+        }
     }
 
+    private void finalClick(int index){
+        // Generate a random index that hasn't been used
+        gamePause();
+        int randomIndex = getRandomUnusedIndex();
+        usedIndexes[randomIndex] = true;
+        int selectedRewardValue = rewardValues[randomIndex];
+        removeRewardValue(selectedRewardValue);
+        txtCasesLeft.setText(String.format("You won: $%,d", selectedRewardValue));
+        Button chosen = findViewById(getButtonId(index));
+
+        //other.setForeground(getDrawable(openSuitcaseImages[randomIndex]));
+        //rewardImageViews[randomIndex].setForeground(getDrawable(rewardOpenImages[randomIndex]));
+    }
 
 
     // Method to remove a reward value from the array
@@ -295,9 +376,9 @@ public class MainActivity extends AppCompatActivity {
         }
         return total;
     }
-    private int calculateBankDeal(int total) {
+    private double calculateBankDeal(int total) {
         // Calculate the bank's offer as 60% of the remaining total
-        return (int) (total * 0.6);
+        return (double) (total * 0.6);
     }
 
 
@@ -338,6 +419,33 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return 0; // Return 0 for unknown index (should not happen)
         }
+
+
     }
 
+    private void gamePause() { //Turns off the ability to select a box
+        for (int i = 0; i < usedIndexes.length; i++) {
+           // if (usedIndexes[i]) {
+                Button button = findViewById(getButtonId(i));
+                button.setClickable(false);
+           // }
+        }
+    }
+
+    //Turns back on ability to select boxes
+    private void gameResume() {
+        for (int i = 0; i < usedIndexes.length; i++) {
+                Button button = findViewById(getButtonId(i));
+                button.setClickable(true);
+        }
+
+    }
+
+    //re-enables all buttons
+    private void buttonEnable() {
+        for (int i = 0; i < usedIndexes.length; i++) {
+            Button button = findViewById(getButtonId(i));
+            button.setEnabled(true);
+        }
+    }
 }
