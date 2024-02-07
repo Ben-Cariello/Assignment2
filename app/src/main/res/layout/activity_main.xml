@@ -147,8 +147,8 @@
 
     <Button
         android:id="@+id/buttonReset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="129dp"
+        android:layout_height="48dp"
         android:layout_marginBottom="16dp"
         android:text="Reset"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -274,5 +274,25 @@
         android:foreground="@drawable/reward_500000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtCasesLeft" />
+
+    <Button
+        android:id="@+id/buttonDeal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="48dp"
+        android:text="Deal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/suitcase_position_10" />
+
+    <Button
+        android:id="@+id/buttonNoDeal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="64dp"
+        android:text="No Deal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reward_500000" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

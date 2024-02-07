@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.widget.ImageView;
 import java.util.Random;
 import android.widget.TextView;
+import android.util.Log;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -21,8 +22,13 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean[] usedIndexes = new boolean[10]; // Array to track used indexes
     public int clickCounter = 0; // Counter to track button clicks
+
+    private int bankOffer = 0;// Declare the bankOffer variable
     public TextView txtCasesLeft;
-    public Button buttonReset;
+    public Button buttonReset,buttonDeal,buttonNoDeal;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +36,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         txtCasesLeft = findViewById(R.id.txtCasesLeft);
         buttonReset = findViewById(R.id.buttonReset);
-        updateCasesLeftText(4);
+        buttonDeal = findViewById(R.id.buttonDeal); // Reference to the "Deal" button
+        buttonNoDeal = findViewById(R.id.buttonNoDeal); // Reference to the "No Deal" button
+        updateCasesLeftText(0, bankOffer); // Update text to display bank's offer
+        buttonDeal.setVisibility(View.GONE);
+        buttonNoDeal.setVisibility(View.GONE);
 
         initializeButtons();
         buttonReset.setOnClickListener(new View.OnClickListener() {
@@ -49,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < usedIndexes.length; i++) {
             usedIndexes[i] = false;
         }
-        updateCasesLeftText(4); // Update text to display 4 cases left
+        updateCasesLeftText(0, bankOffer); // Update text to display bank's offer
+
 
         // Clear foreground images from rewards
         for (ImageView imageView : rewardImageViews) {
@@ -60,9 +71,14 @@ public class MainActivity extends AppCompatActivity {
             Button button = findViewById(getButtonId(i));
             button.setForeground(getDrawable(originalSuitcaseImages[i]));
         }
-
+// Reset the rewardValues array
+        resetRewardValues();
         // Show toast message indicating game reset
         Toast.makeText(this, "Game reset", Toast.LENGTH_SHORT).show();
+    }
+    // Method to reset the rewardValues array
+    private void resetRewardValues() {
+        rewardValues = new int[]{1, 10, 50, 100, 300, 1000, 10000, 50000, 100000, 500000};
     }
 
 
@@ -180,16 +196,39 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    private void updateCasesLeftText(int casesLeft) {
-        txtCasesLeft.setText("Choose " + casesLeft + " cases");
+    private void updateCasesLeftText(int casesLeft, int bankOffer) {
+        if (casesLeft > 0) {
+            // Show "Choose X cases" message if cases are remaining
+            txtCasesLeft.setText("Choose " + casesLeft + " cases");
+            // Hide the "Deal" and "No Deal" buttons
+            buttonDeal.setVisibility(View.GONE);
+            buttonNoDeal.setVisibility(View.GONE);
+        } else if (casesLeft == 0) {
+            // Show the bank offer when all cases are chosen
+            txtCasesLeft.setText("Bank's Offer: $" + bankOffer);
+            // Show the "Deal" and "No Deal" buttons
+            buttonDeal.setVisibility(View.VISIBLE);
+            buttonNoDeal.setVisibility(View.VISIBLE);
+        } else {
+            // Show the bank offer when there are no cases left to choose
+            txtCasesLeft.setText("Bank's Offer: $" + bankOffer);
+            // Hide the "Deal" and "No Deal" buttons
+            buttonDeal.setVisibility(View.GONE);
+            buttonNoDeal.setVisibility(View.GONE);
+        }
     }
+
 
     // Method to handle button click
     private void onButtonClick(int index) {
         int clicksLeft = 4 - clickCounter;
         if (clicksLeft <= 0) {
-            Toast.makeText(this, "No clicks left", Toast.LENGTH_SHORT).show();
-            return; // Exit the method if the limit is reached
+            // Calculate bank's offer when no clicks left
+            int total = calculateTotalReward();
+            int bankOffer = calculateBankDeal(total);
+            updateCasesLeftText(0, bankOffer); // Update text to display bank's offer
+            Toast.makeText(this, "No clicks left", Toast.LENGTH_SHORT).show(); // Show toast
+            return;
         }
         // Generate a random index that hasn't been used
         int randomIndex = getRandomUnusedIndex();
@@ -198,14 +237,69 @@ public class MainActivity extends AppCompatActivity {
         button.setForeground(getDrawable(openSuitcaseImages[randomIndex]));
         rewardImageViews[randomIndex].setForeground(getDrawable(rewardOpenImages[randomIndex]));
 
+        // Remove the reward value from the array
+        int selectedRewardValue = rewardValues[randomIndex];
+        removeRewardValue(selectedRewardValue);
+
         // Mark the selected index as used
         usedIndexes[randomIndex] = true;
-        //make click counter go up
+        // Increase click counter
         clickCounter++;
-        updateCasesLeftText(4 - clickCounter);
-        Toast.makeText(this, "You have " + (clicksLeft - 1) + " click(s) left", Toast.LENGTH_SHORT).show();
-
+        // Update remaining cases text
+        updateCasesLeftText(4 - clickCounter, 0);
+        Toast.makeText(this, "You have " + (clicksLeft - 1) + " click(s) left", Toast.LENGTH_SHORT).show(); // Show remaining clicks toast
     }
+
+
+
+    // Method to remove a reward value from the array
+    private void removeRewardValue(int value) {
+        // Calculate total sum before removal
+        int totalSumBeforeRemoval = calculateTotalReward();
+
+        // Find the index of the reward value to remove
+        int indexToRemove = -1;
+        for (int i = 0; i < rewardValues.length; i++) {
+            if (rewardValues[i] == value) {
+                indexToRemove = i;
+                break;
+            }
+        }
+
+        // If the value to remove is found
+        if (indexToRemove != -1) {
+            // Subtract the value from the total sum
+            int difference = rewardValues[indexToRemove];
+            int totalSumAfterRemoval = totalSumBeforeRemoval - difference;
+
+            // Log the total reward after removal and the difference in total reward
+            Log.d("TotalRewardAfterRemoval", "Total reward after removal: " + totalSumAfterRemoval);
+            Log.d("DifferenceAfterRemoval", "Difference in total reward after removal: " + difference);
+
+            // Shift elements to the left to remove the value
+            for (int i = indexToRemove; i < rewardValues.length - 1; i++) {
+                rewardValues[i] = rewardValues[i + 1];
+            }
+            rewardValues[rewardValues.length - 1] = 0; // Set the last element to 0 to indicate removal
+        } else {
+            // Log a message if the value to remove is not found
+            Log.e("RemoveRewardValue", "Value to remove not found in the reward array.");
+        }
+    }
+
+    // Method to calculate the total sum of reward values in the array
+    private int calculateTotalReward() {
+        int total = 0;
+        for (int rewardValue : rewardValues) {
+            total += rewardValue;
+        }
+        return total;
+    }
+    private int calculateBankDeal(int total) {
+        // Calculate the bank's offer as 60% of the remaining total
+        return (int) (total * 0.6);
+    }
+
 
     // Method to get a random index that hasn't been used
     private int getRandomUnusedIndex() {
