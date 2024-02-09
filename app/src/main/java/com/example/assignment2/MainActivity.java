@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 buttonDeal.setVisibility(View.GONE);
                 buttonNoDeal.setVisibility(View.GONE);
-                txtCasesLeft.setText("You won: $" + calculateBankDeal(calculateTotalReward()) + "!");
+                txtCasesLeft.setText(String.format("You won: $%,.0f!", calculateBankDeal(calculateTotalReward())));
             }
         });
 
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!isFinal) {onButtonClick(0);} else {
-
+                    finalClick(1);
                 }
             }
         });
@@ -268,19 +268,13 @@ public class MainActivity extends AppCompatActivity {
             // Hide the "Deal" and "No Deal" buttons
             buttonDeal.setVisibility(View.GONE);
             buttonNoDeal.setVisibility(View.GONE);
-        } else if (casesLeft == 0) {
+        } else {
             // Show the bank offer when all cases are chosen
             txtCasesLeft.setText(String.format("Bank's Offer: $%,.0f", bankOffer));
             // Show the "Deal" and "No Deal" buttons
             buttonDeal.setVisibility(View.VISIBLE);
             buttonNoDeal.setVisibility(View.VISIBLE);
             gamePause();
-        } else {
-            // Show the bank offer when there are no cases left to choose
-            txtCasesLeft.setText(String.format("Bank's Offer: $%,.0f", bankOffer));
-            // Hide the "Deal" and "No Deal" buttons
-            buttonDeal.setVisibility(View.GONE);
-            buttonNoDeal.setVisibility(View.GONE);
         }
     }
 
@@ -300,9 +294,8 @@ public class MainActivity extends AppCompatActivity {
         int selectedRewardValue = rewardValues[randomIndex];
         removeRewardValue(selectedRewardValue);
 
-        // Mark the selected index as used and turns the case button off
+        // turns the case button off
         button.setEnabled(false);
-        usedIndexes[randomIndex] = true;
         // Increase click counter
         clickCounter++;
         // Update remaining cases text
@@ -322,14 +315,21 @@ public class MainActivity extends AppCompatActivity {
         // Generate a random index that hasn't been used
         gamePause();
         int randomIndex = getRandomUnusedIndex();
-        usedIndexes[randomIndex] = true;
         int selectedRewardValue = rewardValues[randomIndex];
         removeRewardValue(selectedRewardValue);
         txtCasesLeft.setText(String.format("You won: $%,d", selectedRewardValue));
         Button chosen = findViewById(getButtonId(index));
+        int lostAmount = getRandomUnusedIndex();
 
-        //other.setForeground(getDrawable(openSuitcaseImages[randomIndex]));
-        //rewardImageViews[randomIndex].setForeground(getDrawable(rewardOpenImages[randomIndex]));
+        //searches for last button
+        for (int i = 0; i <10;i++) {
+            Button check = findViewById(getButtonId(i));
+            if (check.isEnabled() && check.getId() != chosen.getId()) {
+                check.setForeground(getDrawable(openSuitcaseImages[lostAmount]));
+                rewardImageViews[lostAmount].setForeground(getDrawable(rewardOpenImages[lostAmount]));
+            }
+        }
+
     }
 
 
@@ -337,34 +337,26 @@ public class MainActivity extends AppCompatActivity {
     private void removeRewardValue(int value) {
         // Calculate total sum before removal
         int totalSumBeforeRemoval = calculateTotalReward();
-
+        int index = -1;
         // Find the index of the reward value to remove
-        int indexToRemove = -1;
         for (int i = 0; i < rewardValues.length; i++) {
             if (rewardValues[i] == value) {
-                indexToRemove = i;
+                index = i;
+                rewardValues[i] = 0;
                 break;
             }
         }
 
+
         // If the value to remove is found
-        if (indexToRemove != -1) {
+        if (index != -1) {
             // Subtract the value from the total sum
-            int difference = rewardValues[indexToRemove];
+            int difference = rewardValues[index];
             int totalSumAfterRemoval = totalSumBeforeRemoval - difference;
 
             // Log the total reward after removal and the difference in total reward
             Log.d("TotalRewardAfterRemoval", "Total reward after removal: " + totalSumAfterRemoval);
             Log.d("DifferenceAfterRemoval", "Difference in total reward after removal: " + difference);
-
-            // Shift elements to the left to remove the value
-            for (int i = indexToRemove; i < rewardValues.length - 1; i++) {
-                rewardValues[i] = rewardValues[i + 1];
-            }
-            rewardValues[rewardValues.length - 1] = 0; // Set the last element to 0 to indicate removal
-        } else {
-            // Log a message if the value to remove is not found
-            Log.e("RemoveRewardValue", "Value to remove not found in the reward array.");
         }
     }
 
@@ -389,6 +381,7 @@ public class MainActivity extends AppCompatActivity {
         do {
             index = random.nextInt(10);
         } while (usedIndexes[index]);
+        usedIndexes[index] = true;
         return index;
     }
 
